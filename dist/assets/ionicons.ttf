@@ -1,0 +1,1 @@
+module.exports = __webpack_public_path__ + "static/fonts/ionicons.d535a25.ttf";
