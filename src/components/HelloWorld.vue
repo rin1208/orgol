@@ -1,16 +1,13 @@
 <template>
   <div>
-    <!-- <Row type="flex" justify="end">
-    <i-col :span="8">-->
+
     <Button type="primary" style="margin: 5px" @click="request()">request</Button>
     <Button type="primary" style="margin: 5px" @click="nextMusic()">nextMusic</Button>
-    <Input placeholder="Request Music URL" v-model="url" />
+    <Input placeholder="Request Music URL" clearable v-model="url" />
     <Button type="primary" style="margin: 5px" @click="syncList()">Sync List</Button>
-    <!-- </i-col>
-    <i-col :span="8">-->
+   
     <Table :columns="columns" style="margin: 5px" :data="musicData" width="700"></Table>
-    <!-- </i-col>
-    </Row>-->
+
   </div>
 </template>
 
