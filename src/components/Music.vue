@@ -1,10 +1,10 @@
 
 <template>
-  <section class="container">
-    <div>
+  <Row type="flex" justify="center">
+    <i-col :span="16">
       <youtube ref="youtube" :video-id="videoId" :player-vars="{autoplay:1}" @ended="ended" />
-    </div>
-  </section>
+    </i-col>
+  </Row>
 </template>
 
 <script>

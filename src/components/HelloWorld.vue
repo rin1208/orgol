@@ -1,19 +1,17 @@
-
 <template>
-  <section class="container">
-    <div>
-      <Button type="primary" @click="request()">request</Button>
-      <Button type="primary" @click="nextMusic()">nextMusic</Button>
-      <Input placeholder="Request Music URL" v-model="url" />
-    </div>
-    <!-- <List>
-      <ListItem>
-        <ListItemMeta v-for="data in musicData" :key="data.title" />
-        <template slot="action">
-        </template>
-    </ListItem>-->
-    <!-- </List> -->
-  </section>
+  <div>
+    <!-- <Row type="flex" justify="end">
+    <i-col :span="8">-->
+    <Button type="primary" style="margin: 5px" @click="request()">request</Button>
+    <Button type="primary" style="margin: 5px" @click="nextMusic()">nextMusic</Button>
+    <Input placeholder="Request Music URL" v-model="url" />
+    <Button type="primary" style="margin: 5px" @click="syncList()">Sync List</Button>
+    <!-- </i-col>
+    <i-col :span="8">-->
+    <Table :columns="columns" style="margin: 5px" :data="musicData" width="700"></Table>
+    <!-- </i-col>
+    </Row>-->
+  </div>
 </template>
 
 <script>
@@ -24,7 +22,13 @@ export default {
   data() {
     return {
       url: "",
-      musicData: {}
+      musicData: [],
+      columns: [
+        {
+          title: "URL",
+          key: "Url"
+        }
+      ]
     };
   },
   created() {},
@@ -35,11 +39,23 @@ export default {
       });
     },
     async nextMusic() {
-      await axios.post("/next");
+      await axios.get("/next");
+    },
+    async syncList() {
+      const res = await axios.get("/musiclist");
+      const temporaryData = [];
+      this.musicData = [];
+      Object.keys(res.data).forEach(function(key) {
+        this.push({ Url: res.data[key].Url });
+      }, temporaryData);
+      this.musicData = temporaryData;
     }
   }
 };
 </script>
 
 <style>
+.main {
+  margin: 10px;
+}
 </style>

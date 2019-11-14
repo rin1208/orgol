@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/url"
 
 	"github.com/gin-gonic/contrib/static"
@@ -18,8 +19,8 @@ func main() {
 	r.Use(static.Serve("/", static.LocalFile("./dist", true)))
 
 	r.POST("/request", Request_music)
-	// r.GET("/musiclist", Music_List)
-	r.GET("/end", Next_Music)
+	r.GET("/musiclist", Music_List)
+	r.GET("/next", Next_Music)
 	// r.GET("/now", Music_Now)
 	r.GET("/websocket", func(c *gin.Context) {
 		M.HandleRequest(c.Writer, c.Request)
@@ -36,17 +37,20 @@ func Request_music(c *gin.Context) {
 	u, _ := url.Parse(asset_url.Url)
 	query := u.Query().Get("v")
 	musicdata.Url = query
-	if len(MusicList) == 0 && NowMusic == empty {
-		M.Broadcast([]byte(query))
-	}
-	MusicList = append(MusicList, musicdata)
 
+	if len(MusicList) == 0 && NowMusic == empty {
+		NowMusic.Url = query
+		M.Broadcast([]byte(query))
+
+	} else {
+		MusicList = append(MusicList, musicdata)
+	}
 }
 
-// func Music_List(c *gin.Context) {
+func Music_List(c *gin.Context) {
 
-// 	c.JSON(200, MusicList)
-// }
+	c.JSON(200, MusicList)
+}
 
 // func Music_Now(c *gin.Context) {
 // 	var musicdata MusicData
@@ -64,7 +68,7 @@ func Next_Music(c *gin.Context) {
 	url := MusicList[0].Url
 	NowMusic = MusicList[0]
 	MusicList = MusicList[1:]
-
+	fmt.Println(url)
 	M.Broadcast([]byte(url))
 }
 
