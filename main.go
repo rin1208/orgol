@@ -19,5 +19,5 @@ func main() {
 		handler.M.HandleRequest(c.Writer, c.Request)
 	})
 
-	r.Run(":80")
+	r.Run()
 }
