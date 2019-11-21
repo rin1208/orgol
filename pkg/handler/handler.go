@@ -1,16 +1,16 @@
 package handler
 
 import (
-	"fmt"
 	"net/url"
+	"orgol/pkg/api"
 
-	"../api"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/olahol/melody.v1"
 )
 
-// var M = melody.New()
-// var MusicList []api.MusicData
-// var NowMusic api.MusicData
+var M = melody.New()
+var MusicList []api.MusicData
+var NowMusic api.MusicData
 
 func Request_music(c *gin.Context) {
 	var asset_url api.MusicValue
@@ -40,6 +40,5 @@ func Next_Music(c *gin.Context) {
 	url := MusicList[0].Url
 	NowMusic = MusicList[0]
 	MusicList = MusicList[1:]
-	fmt.Println(url)
 	M.Broadcast([]byte(url))
 }

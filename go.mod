@@ -1,4 +1,4 @@
-module github.com/rin1208/orgol
+module orgol
 
 go 1.12
 
