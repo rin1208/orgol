@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/url"
 	"orgol/pkg/api"
 
@@ -18,16 +17,19 @@ func Request_music(c *gin.Context) {
 	var asset_url api.MusicValue
 	var musicdata api.MusicData
 	var empty api.MusicData
+
 	c.BindJSON(&asset_url)
 
 	u, _ := url.Parse(asset_url.Url)
-	fmt.Println(asset_url.Url, u)
 	query := u.Query().Get("v")
+
 	title := GetTitle(u.String())
+
 	musicdata.Url = query
 	musicdata.Title = title
 
 	if len(MusicList) == 0 && NowMusic == empty {
+
 		NowMusic.Url = query
 		M.Broadcast([]byte(query))
 
