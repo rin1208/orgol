@@ -24,6 +24,7 @@ RUN go build main.go
 FROM alpine
 
 WORKDIR /app
+EXPOSE 8080
 COPY --from=vue-build  /app/dist ./dist
 COPY --from=go-builder /app/main  .
 CMD /app/main
