@@ -1,13 +1,11 @@
 <template>
   <div>
-
     <Button type="primary" style="margin: 5px" @click="request()">request</Button>
     <Button type="primary" style="margin: 5px" @click="nextMusic()">nextMusic</Button>
     <Input placeholder="Request Music URL" clearable v-model="url" />
     <Button type="primary" style="margin: 5px" @click="syncList()">Sync List</Button>
-   
-    <Table :columns="columns" style="margin: 5px" :data="musicData" width="700"></Table>
 
+    <Table :columns="columns" style="margin: 5px" :data="musicData" width="700"></Table>
   </div>
 </template>
 
@@ -24,6 +22,10 @@ export default {
         {
           title: "URL",
           key: "Url"
+        },
+        {
+          title: "Title",
+          key: "Title"
         }
       ]
     };
@@ -43,7 +45,7 @@ export default {
       const temporaryData = [];
       this.musicData = [];
       Object.keys(res.data).forEach(function(key) {
-        this.push({ Url: res.data[key].Url });
+        this.push({ Url: res.data[key].Url, Title: res.data[key].Title });
       }, temporaryData);
       this.musicData = temporaryData;
     }

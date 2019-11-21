@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"fmt"
 	"net/url"
 	"orgol/pkg/api"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
 )
@@ -17,9 +19,13 @@ func Request_music(c *gin.Context) {
 	var musicdata api.MusicData
 	var empty api.MusicData
 	c.BindJSON(&asset_url)
+
 	u, _ := url.Parse(asset_url.Url)
+	fmt.Println(asset_url.Url, u)
 	query := u.Query().Get("v")
+	title := GetTitle(u.String())
 	musicdata.Url = query
+	musicdata.Title = title
 
 	if len(MusicList) == 0 && NowMusic == empty {
 		NowMusic.Url = query
@@ -41,4 +47,10 @@ func Next_Music(c *gin.Context) {
 	NowMusic = MusicList[0]
 	MusicList = MusicList[1:]
 	M.Broadcast([]byte(url))
+}
+
+func GetTitle(url string) string {
+	doc, _ := goquery.NewDocument(url)
+	title := doc.Find("title").Text()
+	return title
 }
